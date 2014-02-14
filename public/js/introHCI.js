@@ -27,6 +27,21 @@ function addProjectDetails(e) {
 	var idNumber = projectID.substr('project'.length);
 
 	console.log("User clicked on project " + idNumber);
+
+	var url = "/project/" + idNumber;
+	$.get(url, addProject);
+	console.log(url);
+}
+
+function addProject(result) {
+	console.log(result);
+	var projectHTML = '<a href="#" class="thumbnail">' +
+		'<p><small>' + result['date'] + '</small></p>' +
+		'<img src="' + result['image'] + '" class="detailsImage"></a>';
+
+	var temp = "#project" + result['id'] + " .details";
+	$(temp).html(projectHTML);
+	$(temp).append(result['summary']);
 }
 
 /*
@@ -35,4 +50,17 @@ function addProjectDetails(e) {
  */
 function randomizeColors(e) {
 	console.log("User clicked on color button");
+
+	var url = "/palette";
+	$.get(url, getPalette);
+	console.log(url);
+}
+
+function getPalette(result) {
+	var colors = result['colors']['hex'];
+	$('body').css('background-color', colors[0]);
+	$('.thumbnail').css('background-color', colors[1]);
+	$('h1, h2, h3, h4, h5, h5').css('color', colors[2]);
+	$('p').css('color', colors[3]);
+	$('.project img').css('opacity', .75);
 }
